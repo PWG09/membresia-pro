@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MembresíaPro — Herramientas Premium para Creadores</title>
+  <meta name="description" content="Plataforma de herramientas de productividad e IA para creadores. Accede a generadores, calculadoras y recursos exclusivos con planes de suscripción." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="#" class="logo" onclick="showView('landing')">
+        <span class="logo-icon">⚡</span>
+        <span>MembresíaPro</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#features" class="nav-link" data-view="landing">Características</a>
+        <a href="#pricing" class="nav-link" data-view="landing">Precios</a>
+        <a href="#tools" class="nav-link" data-view="dashboard" id="navDashboard" style="display:none">Dashboard</a>
+        <button class="btn btn-ghost" id="btnLogin" onclick="openAuthModal('login')">Iniciar sesión</button>
+        <button class="btn btn-primary" id="btnSignup" onclick="openAuthModal('register')">Empezar gratis</button>
+        <div class="user-menu" id="userMenu" style="display:none">
+          <button class="btn btn-ghost" id="userBtn" onclick="toggleUserDropdown()">
+            <span id="userAvatar">U</span>
+            <span id="userNameDisplay">Usuario</span>
+            <span class="badge" id="planBadge">Free</span>
+          </button>
+          <div class="dropdown" id="userDropdown">
+            <a href="#" onclick="showView('dashboard')">Dashboard</a>
+            <a href="#" onclick="showView('account')">Mi cuenta</a>
+            <a href="#" onclick="logout()">Cerrar sesión</a>
+          </div>
+        </div>
+      </div>
+      <button class="mobile-toggle" id="mobileToggle" onclick="toggleMobileNav()" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- LANDING -->
+  <main id="view-landing">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-badge">🚀 Lanza tu productividad al siguiente nivel</div>
+        <h1 class="hero-title">Herramientas premium para <span class="gradient-text">creadores</span> que generan ingresos</h1>
+        <p class="hero-sub">Generadores de prompts IA, ideas de contenido, calculadoras de precios y recursos exclusivos. Todo en un solo lugar con membresía flexible.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary btn-lg" onclick="openAuthModal('register')">Empezar gratis</button>
+          <button class="btn btn-outline btn-lg" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Ver planes</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><strong>+12.4k</strong><span>Creadores</span></div>
+          <div class="stat"><strong>4.9★</strong><span>Valoración</span></div>
+          <div class="stat"><strong>98%</strong><span>Satisfacción</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Todo lo que necesitas para crecer</h2>
+          <p>Herramientas diseñadas para freelancers, creadores de contenido y emprendedores digitales.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">✨</div>
+            <h3>Generador de Prompts IA</h3>
+            <p>Crea prompts optimizados para ChatGPT, Claude, Midjourney y más en segundos. Plantillas profesionales incluidas.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💡</div>
+            <h3>Ideas de Contenido</h3>
+            <p>Nunca te quedes sin ideas. Genera temas virales para Instagram, TikTok, YouTube, blog y newsletter.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💰</div>
+            <h3>Calculadora de Precios</h3>
+            <p>Calcula precios justos para tus servicios freelance según horas, experiencia y mercado.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📚</div>
+            <h3>Biblioteca Premium</h3>
+            <p>Accede a plantillas de contratos, propuestas, emails de venta y checklists exclusivos.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Dashboard de Progreso</h3>
+            <p>Sigue tus métricas de uso, historial de generaciones y objetivos mensuales.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Contenido Exclusivo</h3>
+            <p>Recursos actualizados mensualmente solo para miembros Pro y Business.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section section-alt" id="pricing">
+      <div class="container">
+        <div class="section-header">
+          <h2>Planes simples y transparentes</h2>
+          <p>Elige el plan que se adapte a tu ritmo. Cancela cuando quieras.</p>
+        </div>
+        <div class="pricing-toggle">
+          <button class="toggle-btn active" id="toggleMonthly" onclick="setBilling('monthly')">Mensual</button>
+          <button class="toggle-btn" id="toggleYearly" onclick="setBilling('yearly')">Anual <span class="save-badge">-20%</span></button>
+        </div>
+        <div class="pricing-grid">
+          <!-- FREE -->
+          <div class="price-card">
+            <div class="price-header">
+              <h3>Free</h3>
+              <p class="price-desc">Para probar las herramientas</p>
+              <div class="price">
+                <span class="amount">$0</span>
+                <span class="period">/siempre</span>
+              </div>
+            </div>
+            <ul class="price-features">
+              <li>✓ 5 generaciones de prompts / día</li>
+              <li>✓ 3 ideas de contenido / día</li>
+              <li>✓ Calculadora básica</li>
+              <li>✓ Acceso a recursos gratuitos</li>
+              <li class="muted">✗ Biblioteca premium</li>
+              <li class="muted">✗ Exportar en PDF</li>
+              <li class="muted">✗ Soporte prioritario</li>
+            </ul>
+            <button class="btn btn-outline btn-block" onclick="openAuthModal('register')">Empezar gratis</button>
+          </div>
+
+          <!-- PRO -->
+          <div class="price-card popular">
+            <div class="popular-badge">Más popular</div>
+            <div class="price-header">
+              <h3>Pro</h3>
+              <p class="price-desc">Para creadores serios</p>
+              <div class="price">
+                <span class="amount" id="pricePro">$12</span>
+                <span class="period">/mes</span>
+              </div>
+            </div>
+            <ul class="price-features">
+              <li>✓ Generaciones ilimitadas</li>
+              <li>✓ Ideas de contenido ilimitadas</li>
+              <li>✓ Calculadora avanzada + márgenes</li>
+              <li>✓ Biblioteca premium completa</li>
+              <li>✓ Exportar en PDF y Markdown</li>
+              <li>✓ Historial de 90 días</li>
+              <li class="muted">✗ Soporte prioritario 24h</li>
+            </ul>
+            <button class="btn btn-primary btn-block" onclick="selectPlan('pro')">Elegir Pro</button>
+          </div>
+
+          <!-- BUSINESS -->
+          <div class="price-card">
+            <div class="price-header">
+              <h3>Business</h3>
+              <p class="price-desc">Para equipos y agencias</p>
+              <div class="price">
+                <span class="amount" id="priceBusiness">$29</span>
+                <span class="period">/mes</span>
+              </div>
+            </div>
+            <ul class="price-features">
+              <li>✓ Todo lo de Pro</li>
+              <li>✓ Hasta 5 usuarios</li>
+              <li>✓ Plantillas personalizadas</li>
+              <li>✓ API de acceso (próximamente)</li>
+              <li>✓ Soporte prioritario 24h</li>
+              <li>✓ Onboarding personalizado</li>
+              <li>✓ Factura para empresas</li>
+            </ul>
+            <button class="btn btn-outline btn-block" onclick="selectPlan('business')">Elegir Business</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta-section">
+      <div class="container cta-inner">
+        <h2>¿Listo para potenciar tu negocio?</h2>
+        <p>Únete a miles de creadores que ya usan MembresíaPro para generar más contenido y cobrar mejor.</p>
+        <button class="btn btn-primary btn-lg" onclick="openAuthModal('register')">Crear cuenta gratis</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- DASHBOARD -->
+  <main id="view-dashboard" style="display:none">
+    <div class="container dashboard">
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <p class="sidebar-label">Herramientas</p>
+          <button class="sidebar-item active" data-tool="prompts" onclick="setTool('prompts')">
+            <span>✨</span> Generador de Prompts
+          </button>
+          <button class="sidebar-item" data-tool="ideas" onclick="setTool('ideas')">
+            <span>💡</span> Ideas de Contenido
+          </button>
+          <button class="sidebar-item" data-tool="calculator" onclick="setTool('calculator')">
+            <span>💰</span> Calculadora de Precios
+          </button>
+          <button class="sidebar-item" data-tool="library" onclick="setTool('library')">
+            <span>📚</span> Biblioteca
+          </button>
+        </div>
+        <div class="sidebar-section">
+          <p class="sidebar-label">Cuenta</p>
+          <button class="sidebar-item" onclick="showView('account')">
+            <span>👤</span> Mi cuenta
+          </button>
+          <button class="sidebar-item" onclick="showView('pricing')">
+            <span>⭐</span> Mejorar plan
+          </button>
+        </div>
+      </aside>
+
+      <div class="dashboard-main">
+        <div class="dash-header">
+          <div>
+            <h2 id="toolTitle">Generador de Prompts</h2>
+            <p id="toolDesc">Crea prompts profesionales optimizados para cualquier modelo de IA.</p>
+          </div>
+          <div class="usage-badge" id="usageBadge">
+            <span id="usageText">5 / 5 restantes hoy</span>
+          </div>
+        </div>
+
+        <!-- PROMPT TOOL -->
+        <div class="tool-panel" id="tool-prompts">
+          <div class="form-group">
+            <label>Tipo de prompt</label>
+            <select id="promptType">
+              <option value="chatgpt">ChatGPT / Claude (texto)</option>
+              <option value="midjourney">Midjourney / Flux (imagen)</option>
+              <option value="video">Script de video / Reel</option>
+              <option value="email">Email de ventas / Newsletter</option>
+              <option value="code">Código / Programación</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tema o descripción</label>
+            <textarea id="promptInput" rows="3" placeholder="Ej: Quiero un prompt para escribir un post de LinkedIn sobre productividad para freelancers..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tono</label>
+              <select id="promptTone">
+                <option value="profesional">Profesional</option>
+                <option value="casual">Casual y cercano</option>
+                <option value="inspirador">Inspirador</option>
+                <option value="directo">Directo y persuasivo</option>
+                <option value="humor">Con humor</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Longitud</label>
+              <select id="promptLength">
+                <option value="corto">Corto</option>
+                <option value="medio" selected>Medio</option>
+                <option value="largo">Largo y detallado</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="generatePrompt()">Generar Prompt</button>
+          <div class="result-box" id="promptResult" style="display:none">
+            <div class="result-header">
+              <strong>Tu prompt generado</strong>
+              <button class="btn btn-ghost btn-sm" onclick="copyResult('promptResultText')">Copiar</button>
+            </div>
+            <pre id="promptResultText"></pre>
+          </div>
+        </div>
+
+        <!-- IDEAS TOOL -->
+        <div class="tool-panel" id="tool-ideas" style="display:none">
+          <div class="form-group">
+            <label>Nicho o tema principal</label>
+            <input type="text" id="ideasTopic" placeholder="Ej: Marketing digital, fitness, finanzas personales..." />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Plataforma</label>
+              <select id="ideasPlatform">
+                <option value="instagram">Instagram</option>
+                <option value="tiktok">TikTok</option>
+                <option value="youtube">YouTube</option>
+                <option value="blog">Blog / SEO</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="newsletter">Newsletter</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Cantidad</label>
+              <select id="ideasCount">
+                <option value="5">5 ideas</option>
+                <option value="10" selected>10 ideas</option>
+                <option value="15">15 ideas</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="generateIdeas()">Generar Ideas</button>
+          <div class="result-box" id="ideasResult" style="display:none">
+            <div class="result-header">
+              <strong>Ideas generadas</strong>
+              <button class="btn btn-ghost btn-sm" onclick="copyResult('ideasResultText')">Copiar todas</button>
+            </div>
+            <div id="ideasResultText" class="ideas-list"></div>
+          </div>
+        </div>
+
+        <!-- CALCULATOR TOOL -->
+        <div class="tool-panel" id="tool-calculator" style="display:none">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Horas estimadas del proyecto</label>
+              <input type="number" id="calcHours" value="20" min="1" />
+            </div>
+            <div class="form-group">
+              <label>Tu tarifa por hora ($)</label>
+              <input type="number" id="calcRate" value="45" min="1" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nivel de experiencia</label>
+              <select id="calcExperience">
+                <option value="1">Junior (sin multiplicador)</option>
+                <option value="1.2">Mid-level (+20%)</option>
+                <option value="1.5" selected>Senior (+50%)</option>
+                <option value="1.8">Experto / Especialista (+80%)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Margen de beneficio deseado (%)</label>
+              <input type="number" id="calcMargin" value="25" min="0" max="100" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Gastos extras del proyecto ($)</label>
+            <input type="number" id="calcExtras" value="0" min="0" />
+          </div>
+          <button class="btn btn-primary" onclick="calculatePrice()">Calcular precio recomendado</button>
+          <div class="result-box calc-result" id="calcResult" style="display:none">
+            <div class="calc-grid">
+              <div class="calc-item">
+                <span>Costo base</span>
+                <strong id="calcBase">$0</strong>
+              </div>
+              <div class="calc-item">
+                <span>Con experiencia</span>
+                <strong id="calcExp">$0</strong>
+              </div>
+              <div class="calc-item">
+                <span>Con margen</span>
+                <strong id="calcWithMargin">$0</strong>
+              </div>
+              <div class="calc-item highlight">
+                <span>Precio final recomendado</span>
+                <strong id="calcFinal">$0</strong>
+              </div>
+            </div>
+            <p class="calc-tip" id="calcTip"></p>
+          </div>
+        </div>
+
+        <!-- LIBRARY TOOL -->
+        <div class="tool-panel" id="tool-library" style="display:none">
+          <div class="library-grid" id="libraryGrid">
+            <!-- filled by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ACCOUNT -->
+  <main id="view-account" style="display:none">
+    <div class="container account-page">
+      <h2>Mi cuenta</h2>
+      <div class="account-grid">
+        <div class="account-card">
+          <h3>Perfil</h3>
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" id="accName" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="accEmail" disabled />
+          </div>
+          <button class="btn btn-primary" onclick="saveProfile()">Guardar cambios</button>
+        </div>
+        <div class="account-card">
+          <h3>Suscripción actual</h3>
+          <div class="current-plan">
+            <span class="plan-name" id="accPlanName">Free</span>
+            <span class="plan-price" id="accPlanPrice">$0 / mes</span>
+          </div>
+          <p id="accPlanDesc">Acceso básico a las herramientas.</p>
+          <div class="account-actions">
+            <button class="btn btn-primary" onclick="showView('pricing')">Mejorar plan</button>
+            <button class="btn btn-ghost" id="btnCancelSub" style="display:none" onclick="cancelSubscription()">Cancelar suscripción</button>
+          </div>
+        </div>
+        <div class="account-card">
+          <h3>Uso de este mes</h3>
+          <div class="usage-stats">
+            <div class="usage-item">
+              <span>Prompts generados</span>
+              <strong id="statPrompts">0</strong>
+            </div>
+            <div class="usage-item">
+              <span>Ideas generadas</span>
+              <strong id="statIdeas">0</strong>
+            </div>
+            <div class="usage-item">
+              <span>Cálculos realizados</span>
+              <strong id="statCalc">0</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- PRICING VIEW (from dashboard) -->
+  <main id="view-pricing" style="display:none">
+    <div class="container section">
+      <div class="section-header">
+        <h2>Elige tu plan</h2>
+        <p>Mejora tu membresía y desbloquea todo el potencial.</p>
+      </div>
+      <div class="pricing-toggle">
+        <button class="toggle-btn active" id="toggleMonthly2" onclick="setBilling('monthly')">Mensual</button>
+        <button class="toggle-btn" id="toggleYearly2" onclick="setBilling('yearly')">Anual <span class="save-badge">-20%</span></button>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-header">
+            <h3>Free</h3>
+            <div class="price"><span class="amount">$0</span></div>
+          </div>
+          <ul class="price-features">
+            <li>✓ Límites diarios</li>
+            <li>✓ Herramientas básicas</li>
+          </ul>
+          <button class="btn btn-outline btn-block" id="btnSelectFree" onclick="changePlan('free')">Plan actual</button>
+        </div>
+        <div class="price-card popular">
+          <div class="popular-badge">Recomendado</div>
+          <div class="price-header">
+            <h3>Pro</h3>
+            <div class="price"><span class="amount" id="pricePro2">$12</span><span class="period">/mes</span></div>
+          </div>
+          <ul class="price-features">
+            <li>✓ Ilimitado</li>
+            <li>✓ Biblioteca premium</li>
+            <li>✓ Exportaciones</li>
+          </ul>
+          <button class="btn btn-primary btn-block" id="btnSelectPro" onclick="changePlan('pro')">Activar Pro</button>
+        </div>
+        <div class="price-card">
+          <div class="price-header">
+            <h3>Business</h3>
+            <div class="price"><span class="amount" id="priceBusiness2">$29</span><span class="period">/mes</span></div>
+          </div>
+          <ul class="price-features">
+            <li>✓ Todo Pro +</li>
+            <li>✓ Equipos</li>
+            <li>✓ Soporte prioritario</li>
+          </ul>
+          <button class="btn btn-outline btn-block" id="btnSelectBusiness" onclick="changePlan('business')">Activar Business</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay" id="authModal" style="display:none">
+    <div class="modal">
+      <button class="modal-close" onclick="closeAuthModal()">×</button>
+      <h2 id="authTitle">Iniciar sesión</h2>
+      <p class="modal-sub" id="authSub">Accede a tu cuenta de MembresíaPro</p>
+      <form id="authForm" onsubmit="handleAuth(event)">
+        <div class="form-group" id="nameGroup" style="display:none">
+          <label>Nombre</label>
+          <input type="text" id="authName" placeholder="Tu nombre" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="authEmail" required placeholder="tu@email.com" />
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" id="authPassword" required placeholder="••••••••" minlength="6" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="authSubmit">Iniciar sesión</button>
+      </form>
+      <p class="auth-switch">
+        <span id="authSwitchText">¿No tienes cuenta?</span>
+        <a href="#" id="authSwitchLink" onclick="toggleAuthMode(event)">Regístrate</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-icon">⚡</span> MembresíaPro
+      </div>
+      <p>© 2026 MembresíaPro. Hecho para creadores que quieren generar ingresos.</p>
+      <p class="footer-note">Esta es una aplicación demo funcional. Los pagos son simulados (localStorage).</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
